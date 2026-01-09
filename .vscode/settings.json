@@ -1,0 +1,8 @@
+{
+    "playwright.env": {
+
+    },
+    "playwright.reuseBrowser": true,
+    "playwright.showTrace": false,
+    "genieai.response.showNotification": true
+}
