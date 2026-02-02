@@ -29,13 +29,6 @@ test("test checkbox", async ({ page }) => {
     await check2.uncheck()
 })
 
-// test("radio buttons", async({page}) => {
-//     await page.goto("https://www.mortgagecalculator.org/");
-//     const trackRadio = page.locator('//*[@id="calc"]/form/section/section[2]/div/div/div[1]/div/div/div[4]/div[1]/div[1]/div[2]/span/label[2]/input')
-//     await trackRadio.click()
-//     await expect(trackRadio).toBeChecked()
-// })
-
 test("radio buttons", async ({ page }) => {
     await page.goto("https://www.mortgagecalculator.org/");
     const trackRadio = page.locator(`input[value = "percent"][name = "param[downpayment_type]"][type = "radio"]`);
@@ -43,10 +36,10 @@ test("radio buttons", async ({ page }) => {
     await expect(trackRadio).toBeChecked();
 })
 
-test("dropdown by value", async({page}) => {
+test("dropdown", async({page}) => {
     await page.goto("https://the-internet.herokuapp.com/dropdown");
-    await page.locator("#dropdown").selectOption("1");
-    const selectedOption = page.locator(`option[value = "1"]`);
+    const selectedOption = page.locator("#dropdown");
+    await selectedOption.selectOption("1")
     await expect(selectedOption).toHaveValue("1");
     await page.reload();
     await expect(selectedOption).toHaveValue("")
