@@ -25,8 +25,10 @@ test("test checkbox", async ({ page }) => {
     await page.goto("https://the-internet.herokuapp.com/checkboxes");
     const check1 = page.locator("#checkboxes").getByRole("checkbox").nth(0)
     const check2 = page.locator("#checkboxes").getByRole("checkbox").nth(1)
-    await check1.check()
-    await check2.uncheck()
+    await check1.check({timeout: 6000})
+    await expect(check1).toBeChecked()
+    await check2.uncheck({timeout:6000})
+    await expect(check2).toBeChecked({checked: false})
 })
 
 test("radio buttons", async ({ page }) => {
@@ -43,4 +45,28 @@ test("dropdown", async({page}) => {
     await expect(selectedOption).toHaveValue("1");
     await page.reload();
     await expect(selectedOption).toHaveValue("")
+})
+
+test("dynamic loading", async({page}) => {
+    await page.goto("https://the-internet.herokuapp.com/dynamic_loading/1");
+    await page.getByRole("button", {name: "Start"}).click();
+    const loader = page.locator("#loading");
+    const message = page.locator("#finish h4");
+    await expect(message).toContainText("Hello World!");
+    await expect(loader).toBeHidden({timeout: 10000});
+})
+
+test("is element hidden", async({page}) => {
+    await page.goto("https://mortgagecalculator.org/", { waitUntil: "domcontentloaded", timeout: 15000 });
+    await expect(page).toHaveTitle("Mortgage Calculator");
+    const hiddenObj = page.locator("#colorbox")
+    await expect(hiddenObj).toBeHidden()
+})
+
+test("is element visible", async({page}) => {
+    await page.goto("https://mortgagecalculator.org/", { waitUntil: "domcontentloaded", timeout: 15000 });
+    await expect(page).toHaveTitle("Mortgage Calculator");
+    const hiddenObj = page.locator('#toggle_pie');
+    await expect(hiddenObj).toBeVisible();
+    await expect(hiddenObj).toContainText("View Loan Breakdown")
 })
