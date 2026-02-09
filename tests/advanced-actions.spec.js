@@ -99,7 +99,7 @@ test("drag and drop using page", async ({ page }) => {
     const columnA = page.locator("#column-a");
     const columnB = page.locator("#column-b");
 
-    await page.dragAndDrop("#column-a", "#column-b");
+    await page.dragAndDrop(columnA, columnB);
 
     await expect(columnA).toContainText("B")
     await expect(columnB).toContainText("A")
