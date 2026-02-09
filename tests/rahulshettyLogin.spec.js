@@ -1,4 +1,7 @@
-import { test, expect } from "@playwright/test"
+import { test, expect } from "./fixtures.spec"
+
+
+
 
 test.describe("login page", () => {
 
@@ -83,7 +86,7 @@ test.describe("login page", () => {
 
     })
 
-    
+
     test("protocommerce page", async ({ page }) => {
         await page.goto("https://rahulshettyacademy.com/angularpractice/")
 
@@ -111,8 +114,8 @@ test.describe("login page", () => {
         await selectOption.selectOption("Male")
         await expect(selectOption).toHaveValue("Male")
         await dob.focus()
-        await dob.type("03012002")
-        await expect(dob).toHaveValue("2002-01-03")
+        await dob.type("01032002")
+        await expect(dob).toHaveValue("2002-03-01")
         await page.getByRole("button", { name: "Submit" }).click()
 
         const msgPop = page.locator(".alert-success")
@@ -121,3 +124,91 @@ test.describe("login page", () => {
 })
 
 
+test('test with no assertions', async ({ page }) => {
+    await page.goto('https://rahulshettyacademy.com/angularpractice/');
+    await page.locator('form input[name="name"]').click();
+    await page.locator('form input[name="name"]').fill('Affia Okafor');
+    await page.locator('input[name="email"]').click();
+    await page.locator('input[name="email"]').fill('dokafor77@gmail.com');
+    await page.getByRole('textbox', { name: 'Password' }).click();
+    await page.getByRole('textbox', { name: 'Password' }).fill('1234567890');
+    const check = page.getByRole('checkbox', { name: 'Check me out if you Love' });
+    await check.click();
+    await expect(check).toBeChecked();
+    await page.getByLabel('Gender').selectOption('Male');
+    await page.getByRole('radio', { name: 'Employed' }).check();
+    await page.locator('input[name="bday"]').fill('2002-01-03');
+    await page.getByRole('button', { name: 'Submit' }).click();
+    await page.getByText('× Success! The Form has been').click();
+});
+
+
+test.describe("assertions practice", () => {
+
+    const names = {
+        myName: "Affia Okafor",
+        myCountryName: "Nigeria"
+    }
+
+
+
+    test.only("assertions", async ({ loginPageForPractice }) => {
+        const name = loginPageForPractice.locator('#name')
+        const checkbox2 = loginPageForPractice.locator('#checkBoxOption2');
+        const dropdownselect2 = loginPageForPractice.locator('#dropdown-class-example');
+        const searchCountry = loginPageForPractice.getByRole('textbox', { name: 'Type to Select Countries' });
+        const hideBtn = loginPageForPractice.locator('#hide-textbox');
+        const showBtn = loginPageForPractice.locator('#show-textbox');
+        const radio = loginPageForPractice.locator("input[value='radio2']")
+        const hideOrShowExample = loginPageForPractice.getByRole('textbox', { name: 'Hide/Show Example' })
+
+
+
+
+        await name.fill(names.myName);
+        await expect(name).toHaveValue("Affia Okafor")
+
+        await dropdownselect2.selectOption('option2');
+        await expect(dropdownselect2).toHaveValue("option2");
+
+        await checkbox2.check();
+        await expect(checkbox2).toBeChecked();
+
+        await searchCountry.click();
+        await searchCountry.fill(names.myCountryName);
+        await searchCountry.press("Enter");
+        await expect(searchCountry).toHaveValue("Nigeria");
+
+        await radio.check();
+        await expect(radio).toBeChecked();
+
+        await expect(hideOrShowExample).not.toBeHidden();
+        await expect(hideOrShowExample).toBeVisible();
+
+        await hideBtn.click();
+        await expect(hideOrShowExample).toBeHidden();
+        await expect(hideOrShowExample).not.toBeVisible();
+
+        // await loginPageForPractice.pause();
+
+
+        await loginPageForPractice.getByRole('button', { name: 'Confirm' }).click();
+        await loginPageForPractice.getByRole('button', { name: 'Mouse Hover' }).click();
+
+        loginPageForPractice.on("dialog", dialog => dialog.accept)
+
+        const frameLocator = loginPageForPractice.frameLocator("#courses-iframe")
+
+        await loginPageForPractice.locator('iframe[name="iframe-name"]').contentFrame().getByRole('link', { name: 'NEW All Access plan' }).click();
+        const noOfSubscribers = await frameLocator.locator(".text h2 span").textContent()
+        await expect(noOfSubscribers).toContain("13,522")
+
+        console.log(noOfSubscribers)
+
+
+        // const viewCourses = frameLocator.getByRole('link', { name: 'VIEW ALL COURSES' });
+        // await viewCourses.click();
+        
+    })
+
+})

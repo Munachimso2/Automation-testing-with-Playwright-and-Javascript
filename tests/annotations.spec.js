@@ -1,5 +1,4 @@
 // import { test, expect } from "@playwright/test";
-import { log } from "node:console"
 import {test, expect} from "./fixtures.spec"
 
 
