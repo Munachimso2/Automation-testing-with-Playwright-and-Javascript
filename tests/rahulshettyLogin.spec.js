@@ -229,23 +229,15 @@ test.describe("assertions practice", () => {
 
         // await loginPageForPractice.pause();
 
-
+        // page.once("dialog", dialog => dialog.accept())
         await loginPageForPractice.getByRole('button', { name: 'Confirm' }).click();
-        await loginPageForPractice.getByRole('button', { name: 'Mouse Hover' }).click();
 
+        await loginPageForPractice.getByRole('button', { name: 'Mouse Hover' }).hover();
 
-        const frameLocator = loginPageForPractice.frameLocator("#courses-iframe")
+        const iframe = loginPageForPractice.frameLocator("#courses-iframe")
+        await iframe.getByRole("link", {name: "All Access Plan"}).click()
 
-        await loginPageForPractice.locator('iframe[name="iframe-name"]').contentFrame().getByRole('link', { name: 'NEW All Access plan' }).click();
-        const noOfSubscribers = await frameLocator.locator(".text h2 span").textContent()
-        await expect(noOfSubscribers).toContain("13,522")
-
-        console.log(noOfSubscribers)
-
-
-        // const viewCourses = frameLocator.getByRole('link', { name: 'VIEW ALL COURSES' });
-        // await viewCourses.click();
-
+        const noOfSubs = iframe.locator(".text h2 span")
+        await expect(noOfSubs).toHaveText("13,522")
     })
-
 })
