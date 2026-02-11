@@ -229,7 +229,7 @@ test.describe("assertions practice", () => {
 
         // await loginPageForPractice.pause();
 
-        // page.once("dialog", dialog => dialog.accept())
+        loginPageForPractice.on("dialog", dialog => dialog.accept())
         await loginPageForPractice.getByRole('button', { name: 'Confirm' }).click();
 
         await loginPageForPractice.getByRole('button', { name: 'Mouse Hover' }).hover();
@@ -247,3 +247,4 @@ test.describe("assertions practice", () => {
         await expect(noOfSubs).toHaveText("13,522")
     })
 })
+
