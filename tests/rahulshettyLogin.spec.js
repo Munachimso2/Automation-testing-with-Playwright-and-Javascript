@@ -233,6 +233,12 @@ test.describe("assertions practice", () => {
         await loginPageForPractice.getByRole('button', { name: 'Confirm' }).click();
 
         await loginPageForPractice.getByRole('button', { name: 'Mouse Hover' }).hover();
+        const top = loginPageForPractice.getByText("Top");
+        await expect(top).toBeVisible()
+        const reload = loginPageForPractice.getByText("Reload");
+        await expect(reload).toBeVisible()
+        await top.click()
+        
 
         const iframe = loginPageForPractice.frameLocator("#courses-iframe")
         await iframe.getByRole("link", {name: "All Access Plan"}).click()
