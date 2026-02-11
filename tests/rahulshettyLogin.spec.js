@@ -126,21 +126,59 @@ test.describe("login page", () => {
 
 test('test with no assertions', async ({ page }) => {
     await page.goto('https://rahulshettyacademy.com/angularpractice/');
-    await page.locator('form input[name="name"]').click();
-    await page.locator('form input[name="name"]').fill('Affia Okafor');
-    await page.locator('input[name="email"]').click();
-    await page.locator('input[name="email"]').fill('dokafor77@gmail.com');
-    await page.getByRole('textbox', { name: 'Password' }).click();
-    await page.getByRole('textbox', { name: 'Password' }).fill('1234567890');
-    const check = page.getByRole('checkbox', { name: 'Check me out if you Love' });
-    await check.click();
-    await expect(check).toBeChecked();
-    await page.getByLabel('Gender').selectOption('Male');
-    await page.getByRole('radio', { name: 'Employed' }).check();
-    await page.locator('input[name="bday"]').fill('2002-01-03');
-    await page.getByRole('button', { name: 'Submit' }).click();
-    await page.getByText('× Success! The Form has been').click();
+
+    const enterName = page.locator(".form-group input[name = 'name']")
+    await enterName.fill("Affia David")
+    await expect(enterName).toHaveValue("Affia David")
+
+    const enterEmail = page.locator(".form-group input[name = 'email']")
+    await enterEmail.fill("dokafor77@gmail.com")
+    await expect(enterEmail).toHaveValue("dokafor77@gmail.com")
+
+    const enterPassword = page.locator("#exampleInputPassword1")
+    await enterPassword.fill("myPassword")
+    await expect(enterPassword).toHaveValue("myPassword")
+
+    const checkbox = page.locator("#exampleCheck1")
+    await checkbox.check()
+    await expect(checkbox).toBeChecked()
+
+    const selectGender = page.locator("#exampleFormControlSelect1")
+    await selectGender.selectOption("Male")
+    await expect(selectGender).toHaveValue("Male")
+
+    const employment = page.locator("input[value ='option2']")
+    await employment.check()
+    await expect(employment).toBeChecked()
+
+    const dob = page.locator("input[type ='date'][name = 'bday']")
+    await dob.type("01032002")
+    await expect(dob).toHaveValue("2002-03-01")
+
+    const submitBtn = page.getByRole("button", { name: "Submit" })
+    await submitBtn.click()
+
+    const alertSuccess = page.locator(".alert-success")
+    await expect(alertSuccess).toBeVisible()
+    await expect(alertSuccess).toContainText("Success")
+
 });
+
+test("shop section", async ({ page }) => {
+    await page.goto("https://rahulshettyacademy.com/angularpractice/shop")
+
+    const addIphone2cart = page.locator(".card-footer button").first()
+    await addIphone2cart.click() 
+
+    const checkout  = page.locator("a.nav-link.btn.btn-primary")
+    await checkout.click()
+
+    const iPhoneX = page.getByText("iPhone X")
+    await expect(iPhoneX).toBeVisible()
+
+    await page.getByRole("button", {name: "Remove"}).click()
+    await expect(iPhoneX).not.toBeVisible()
+})
 
 
 test.describe("assertions practice", () => {
@@ -195,7 +233,6 @@ test.describe("assertions practice", () => {
         await loginPageForPractice.getByRole('button', { name: 'Confirm' }).click();
         await loginPageForPractice.getByRole('button', { name: 'Mouse Hover' }).click();
 
-        loginPageForPractice.on("dialog", dialog => dialog.accept)
 
         const frameLocator = loginPageForPractice.frameLocator("#courses-iframe")
 
@@ -208,7 +245,7 @@ test.describe("assertions practice", () => {
 
         // const viewCourses = frameLocator.getByRole('link', { name: 'VIEW ALL COURSES' });
         // await viewCourses.click();
-        
+
     })
 
 })
