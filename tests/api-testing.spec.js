@@ -36,7 +36,7 @@ test.describe("login to complete an order", () => {
         const iphone2cart = page.locator(".card", { hasText: "iphone 13 pro" }).getByRole("button", { name: "Add To Cart" })
         await iphone2cart.click()
         await page.pause()
-        const cartBtn = page.getByRole("button", { name: 'Cart' })
+        const cartBtn = page.getByText("Cart", {exact: true})
         await cartBtn.click()
     })
 })
