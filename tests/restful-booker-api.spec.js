@@ -112,19 +112,3 @@ test.describe(() => {
         console.log(response)
     })
 })
-
-
-test.describe("create user", async ({ page }) => {
-    page.addInitScript(value => {
-
-        window.localStorage.setItem("token", token)
-    })
-
-    test("login user", async ({ page }) => {
-        const firstname = page.locator("#name")
-        await firstname.fill("Affia")
-
-        const upload = await page.getByLabel("Upload Files").setInputFiles(__dirname, "file.txt")
-
-    })
-})
